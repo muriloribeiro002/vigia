@@ -1,0 +1,114 @@
+CREATE DATABASE VigIA;
+USE VigIA;
+
+CREATE TABLE pessoa(
+ID_pessoa INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+nome VARCHAR(100) NOT NULL,
+email VARCHAR(100) NOT NULL UNIQUE,
+celular VARCHAR(15) NOT NULL,
+dt_nascimento DATE
+);
+
+CREATE TABLE pessoa_fisica(
+ID_pessoa INT NOT NULL,
+CPF VARCHAR(15) NOT NULL UNIQUE,
+FOREIGN KEY(ID_pessoa) REFERENCES pessoa(ID_pessoa)
+);
+
+CREATE TABLE pessoa_juridica(
+ID_pessoa INT NOT NULL,
+CNPJ VARCHAR(15) NOT NULL UNIQUE,
+FOREIGN KEY(ID_pessoa) REFERENCES pessoa(ID_pessoa)
+);
+
+CREATE TABLE login(
+    ID_login INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    ID_pessoa INT NOT NULL,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    dt_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    dt_atualizado TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (ID_pessoa) REFERENCES pessoa(ID_pessoa)
+);
+
+CREATE TABLE rosto(
+ID_rosto INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ID_pessoa INT NOT NULL,
+caminho_imagem_rosto VARCHAR(100) NOT NULL UNIQUE,
+FOREIGN KEY(ID_pessoa) REFERENCES pessoa(ID_pessoa)
+);
+
+CREATE TABLE veiculo(
+ID_veiculo INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+placa VARCHAR(10) NOT NULL,
+marca VARCHAR(50) NOT NULL,
+modelo VARCHAR(50) NOT NULL,
+ano INT NOT NULL,
+cor VARCHAR(50)
+);
+
+CREATE TABLE pessoa_veiculo(
+ID_pessoa INT NOT NULL,
+ID_veiculo INT NOT NULL,
+FOREIGN KEY (ID_pessoa) REFERENCES pessoa(ID_pessoa),
+FOREIGN KEY (ID_veiculo) REFERENCES veiculo(ID_veiculo)
+);
+
+CREATE TABLE ocorrencia(
+ID_ocorrencia INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ID_pessoa INT NOT NULL,
+dt_evento DATE NOT NULL,
+tipo VARCHAR(20) NOT NULL,
+endereco VARCHAR(100) NOT NULL,
+descricao VARCHAR(250) NOT NULL,
+dt_reg_ocorrencia DATE NOT NULL,
+FOREIGN KEY (ID_pessoa) REFERENCES pessoa(ID_pessoa)
+);
+
+CREATE TABLE propriedade(
+ID_propriedade INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ID_pessoa INT NOT NULL,
+tipo VARCHAR(20) NOT NULL,
+nome VARCHAR(100),
+CEP VARCHAR(10) NOT NULL,
+rua VARCHAR(100) NOT NULL,
+numero INT NOT NULL,
+complemento VARCHAR(50),
+bairro VARCHAR(50) NOT NULL,
+cidade VARCHAR(50) NOT NULL,
+FOREIGN KEY (ID_pessoa) REFERENCES pessoa(ID_pessoa)
+);
+
+CREATE TABLE convidado(
+ID_convidado INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ID_pessoa INT NOT NULL,
+ID_propriedade INT NOT NULL,
+nome VARCHAR(100) NOT NULL,
+CPF VARCHAR(15) NOT NULL UNIQUE,
+funcao VARCHAR(20) NOT NULL,
+codigo VARCHAR(10) NOT NULL UNIQUE,
+complemento VARCHAR(50),
+ativo BIT NOT NULL,
+dt_convite DATE NOT NULL,
+FOREIGN KEY (ID_pessoa) REFERENCES pessoa(ID_pessoa),
+FOREIGN KEY (ID_propriedade) REFERENCES propriedade(ID_propriedade)
+);
+
+CREATE TABLE sirene(
+ID_sirene INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ID_propriedade INT NOT NULL,
+localizacao VARCHAR(50) NOT NULL,
+ativada BIT,
+dt_ativada DATE,
+FOREIGN KEY (ID_propriedade) REFERENCES propriedade(ID_propriedade)
+);
+
+CREATE TABLE camera(
+ID_camera INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ID_propriedade INT NOT NULL,
+localizacao VARCHAR(50) NOT NULL,
+IP VARCHAR(20) NOT NULL,
+desligada BIT,
+dt_desligada DATE,
+FOREIGN KEY (ID_propriedade) REFERENCES propriedade(ID_propriedade)
+);

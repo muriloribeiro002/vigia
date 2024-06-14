@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "tccvigia";
-$password = "12026";
+$username = "adimvigia";
+$password = "aamr2024";
 $dbname = "vigia";
 
 // Criar conexão
