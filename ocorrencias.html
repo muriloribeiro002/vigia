@@ -10,10 +10,11 @@
 <body>
     <div class="ocorrencia-form">
         <h2>Registrar Ocorrência</h2>
-        <form>
-            <input type="text" placeholder="Descrição da ocorrência">
-            <input type="text" placeholder="Data da ocorrência">
-            <input type="text" placeholder="Tipo de Endereço">
+        <form action="ocorrencia.php" method="post">
+			<input type="text" name="tipo" placeholder="Tipo da ocorrência">
+			<input type="text" name="dt_evento" placeholder="Data da ocorrência">
+			<input type="text" name="endereco" placeholder="Endereço da ocorrência">
+            <input type="text" name="descricao" placeholder="Descrição da ocorrência">
             <button type="submit">Registrar</button>
         </form>
     </div>
